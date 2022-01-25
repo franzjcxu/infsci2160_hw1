@@ -1,0 +1,64 @@
+---
+title: "Homework 01"
+author: "Xu,Junchao jux16@pitt.edu"
+date: today
+
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+    theme: flatly
+---
+
+# Overview
+
+> In this assignment, You'll learn how to do homework using [RMarkdown](http://rmarkdown.rstudio.com) and Git repository. Follow the submission guideline ([How to submit homework](https://yurulin.github.io/class-data-mining/assignment/homework_instruction.html)) to submit the html-preview link of your homework.
+
+Play with the Class01-Example-1 data. Create RMarkdown report using this template. Read and answer each question carefully. The grading rubric is provided below.
+
+1. Install necessary packages (e.g., `ggplot2`, `nutshell`). Load and print the dimension of data `births2006.smpl`. (**Note:** If a package is not available from the official repository, you can install the package from the archived source. See the template RMarkdown note for a hint in the code block about how to install the package from its archived source.)
+2. What is the most popular day of the week for babies being born? Generate a histogram plot to show the number of total instances over the days of week (put `frequency` on the y-axis and `day of week` on the x-axis). Use `facet_grid` in `ggplot` to break down the frequencies according to the three delivery methods. 
+    + In the data, column `DOB_WK` is the day of week, and `DMETH_REC` is the delivery method.
+3. Are triplets more likely to weigh less than singleton and twins? Generate the density plot of baby weights for singletons, twins and triplets to compare the weight distributions across the three conditions. Plot the three density curves in one figure, and use three colors to differentiate the density curves. 
+    + In the data, `DPLURAL` is the multiple-birth status.
+
+```{r document_setup, echo=F, message=F, warning=F}
+# This chunk can include things you need for the rest of the document
+library('ggplot2') ## most of the time you will need ggplot
+theme_set(theme_bw()) # change the default ggplot theme to black-and-white
+
+knitr::opts_chunk$set(
+  echo=T, ## show your R code chunk
+  message = F, ## hide the message
+  warning = F, ## hide the warning
+  autodep = T ## make sure your separate code chunks can find the dependencies (from other code chunk)
+)
+```
+
+# 1. Load and print the dimension of birth data (`births2006.smpl`)
+**Grading note (10%):** need to load and print the dimension (5%), and explicitly answer the dimension of the dataset (5%)
+
+
+```{r}
+dim(births2006.smpl)
+```
+
+# 2. Histogram plots for number of total/C-section/Vaginal instances over the days of week
+**Grading note (40%):** need to generate two plots as requested (30%) and explicitly answer the question (What is the most popular day of the week for babies being born?) (10%)
+
+```{r}
+## YOUR CODE HERE
+ggplot(data=births2006.smpl, mapping=aes(x=DOB_WK))+geom_histogram()
+ggplot(data=births2006.smpl, mapping=aes(x=DOB_WK))+geom_histogram()+facet_wrap(~DMETH_REC)
+```
+
+Thursday is the most popular day of the week for babies being born.
+
+# 3. Density plot of baby weights in singletons, twins and triplets
+**Grading note (50%):** need to filter the right categories, and generate a plot (with only three categories) (40%); need to explicitly answer the question (Are triplets more likely to weigh less than singleton and twins?) with reasoning (could be based on density plot or hypothesis testing) (10%)
+
+```{r}
+ggplot(data=births2006.smpl)+geom_point(mapping=aes(x=DPLURAL,y=DBWT))
+```
+As can be seen from the plot,triplets are more likely to weigh less than singleton and twins, the possible reason might be the limited volume of uterus, with more babies sharing the space, their have to be smaller in size, they also have to share total amount of nutrition provided by the mother which is still a limited amount.
